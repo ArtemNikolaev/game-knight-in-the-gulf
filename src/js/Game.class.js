@@ -2,16 +2,16 @@ import { Level } from "./Level.class";
 import { Player } from "./Player.class";
 import { KeyUpHandlerClass } from "./KeyUpHandler.class";
 import { levelEvents, movements } from "./utils";
+import { Renderer } from "./Renderer.class";
 
 export class Game {
-  #ctx;
+  #renderer;
   #level;
   #player = new Player();
   #eventHandler = new KeyUpHandlerClass();
 
-  constructor(ctx) {
-    this.#ctx = ctx;
-    this.#createLevel(ctx);
+  constructor(canvas) {
+    this.#renderer = new Renderer(canvas);
 
     this.#createKeyBindings();
   }
@@ -28,9 +28,9 @@ export class Game {
 
   #createLevel() {
     this.#level = new Level({
-      context: this.#ctx,
       eventHandler: this.#eventHandler,
       player: this.#player,
+      renderer: this.#renderer,
     });
 
     this.#level.addEventListener(levelEvents.done, () => this.#createLevel());
