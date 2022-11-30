@@ -6,11 +6,7 @@ export class Level extends EventTarget {
   #renderer;
   #eventHandler;
 
-  #goUp;
-  #goDown;
-  #goLeft;
-  #goRight;
-
+  #abortController = new AbortController();
   #key = {};
   #done = false;
   #doorPosition = Math.floor(Math.random() * 16);
@@ -25,15 +21,18 @@ export class Level extends EventTarget {
     this.#renderer = renderer;
     this.#eventHandler = eventHandler;
 
-    this.#goUp = () => this.#up();
-    this.#goDown = () => this.#down();
-    this.#goLeft = () => this.#left();
-    this.#goRight = () => this.#right();
-
-    this.#eventHandler.addEventListener(movements.up, this.#goUp);
-    this.#eventHandler.addEventListener(movements.down, this.#goDown);
-    this.#eventHandler.addEventListener(movements.left, this.#goLeft);
-    this.#eventHandler.addEventListener(movements.right, this.#goRight);
+    this.#eventHandler.addEventListener(movements.up, () => this.#up(), {
+      signal: this.#abortController.signal,
+    });
+    this.#eventHandler.addEventListener(movements.down, () => this.#down(), {
+      signal: this.#abortController.signal,
+    });
+    this.#eventHandler.addEventListener(movements.left, () => this.#left(), {
+      signal: this.#abortController.signal,
+    });
+    this.#eventHandler.addEventListener(movements.right, () => this.#right(), {
+      signal: this.#abortController.signal,
+    });
 
     this.#render();
   }
@@ -85,11 +84,8 @@ export class Level extends EventTarget {
   }
 
   #onDone() {
-    this.#eventHandler.removeEventListener(movements.up, this.#goUp);
-    this.#eventHandler.removeEventListener(movements.down, this.#goDown);
-    this.#eventHandler.removeEventListener(movements.left, this.#goLeft);
-    this.#eventHandler.removeEventListener(movements.right, this.#goRight);
+    this.#abortController.abort();
 
-    setTimeout(() => this.dispatchEvent(new Event(levelEvents.done)), 0);
+    this.dispatchEvent(new Event(levelEvents.done));
   }
 }

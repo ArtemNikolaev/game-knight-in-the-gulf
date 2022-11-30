@@ -9,6 +9,7 @@ export class Game {
   #level;
   #player = new Player();
   #eventHandler = new KeyUpHandlerClass();
+  #abortController = new AbortController();
 
   constructor(canvas) {
     this.#renderer = new Renderer(canvas);
@@ -28,12 +29,19 @@ export class Game {
   }
 
   #createLevel() {
+    if (this.#level) {
+      this.#abortController.abort();
+      this.#abortController = new AbortController();
+    }
+
     this.#level = new Level({
       eventHandler: this.#eventHandler,
       player: this.#player,
       renderer: this.#renderer,
     });
 
-    this.#level.addEventListener(levelEvents.done, () => this.#createLevel());
+    this.#level.addEventListener(levelEvents.done, () => this.#createLevel(), {
+      signal: this.#abortController.signal,
+    });
   }
 }
