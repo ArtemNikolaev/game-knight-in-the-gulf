@@ -4,8 +4,15 @@ export class Level extends EventTarget {
   #ctx;
   #player;
   #renderer;
+  #eventHandler;
+
+  #goUp;
+  #goDown;
+  #goLeft;
+  #goRight;
 
   #key = {};
+  #done = false;
   #doorPosition = Math.floor(Math.random() * 16);
   #playerPosition = Math.floor(Math.random() * 16);
   #keyPosition = Math.floor(Math.random() * 16);
@@ -16,11 +23,17 @@ export class Level extends EventTarget {
     this.#ctx = ctx;
     this.#player = player;
     this.#renderer = renderer;
+    this.#eventHandler = eventHandler;
 
-    eventHandler.addEventListener(movements.up, () => this.#up());
-    eventHandler.addEventListener(movements.down, () => this.#down());
-    eventHandler.addEventListener(movements.left, () => this.#left());
-    eventHandler.addEventListener(movements.right, () => this.#right());
+    this.#goUp = () => this.#up();
+    this.#goDown = () => this.#down();
+    this.#goLeft = () => this.#left();
+    this.#goRight = () => this.#right();
+
+    this.#eventHandler.addEventListener(movements.up, this.#goUp);
+    this.#eventHandler.addEventListener(movements.down, this.#goDown);
+    this.#eventHandler.addEventListener(movements.left, this.#goLeft);
+    this.#eventHandler.addEventListener(movements.right, this.#goRight);
 
     this.#render();
   }
@@ -47,30 +60,36 @@ export class Level extends EventTarget {
     this.#render();
   }
 
-  #keyValidation() {
+  #validate() {
     if (this.#player.has(this.#key)) {
       this.#keyPosition = this.#playerPosition;
+
+      if (this.#doorPosition === this.#playerPosition) {
+        this.#done = true;
+      }
     } else if (this.#playerPosition === this.#keyPosition) {
       this.#player.key = this.#key;
     }
   }
 
   #render() {
-    this.#keyValidation();
+    this.#validate();
 
     this.#renderer.render({
       playerPosition: this.#playerPosition,
       doorPosition: this.#doorPosition,
       keyPosition: this.#keyPosition,
     });
+
+    if (this.#done) this.#onDone();
   }
 
-  onDone() {
-    eventHandler.removeEventListener(movements.up, this.#up);
-    eventHandler.removeEventListener(movements.down, this.#down);
-    eventHandler.removeEventListener(movements.left, this.#left);
-    eventHandler.removeEventListener(movements.right, this.#right);
+  #onDone() {
+    this.#eventHandler.removeEventListener(movements.up, this.#goUp);
+    this.#eventHandler.removeEventListener(movements.down, this.#goDown);
+    this.#eventHandler.removeEventListener(movements.left, this.#goLeft);
+    this.#eventHandler.removeEventListener(movements.right, this.#goRight);
 
-    this.dispatchEvent(new Event(levelEvents.done));
+    setTimeout(() => this.dispatchEvent(new Event(levelEvents.done)), 0);
   }
 }
