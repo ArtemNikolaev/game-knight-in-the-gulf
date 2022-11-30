@@ -48,24 +48,20 @@ export class Renderer {
   }
 
   #drawKnight(playerPosition) {
-    this.#drawTile(playerPosition, "src/assets/knight.png");
+    this.#drawTile(playerPosition, document.querySelector(".knight-image"));
   }
 
   #drawExit(doorPosition) {
-    this.#drawTile(doorPosition, "src/assets/door.png");
+    this.#drawTile(doorPosition, document.querySelector(".door-image"));
   }
 
   #drawKey(doorPosition) {
-    this.#drawTile(doorPosition, "src/assets/key.png");
+    this.#drawTile(doorPosition, document.querySelector(".key-image"));
   }
 
-  #drawTile(position, imageUrl) {
+  #drawTile(position, imageEl) {
     const width = Math.floor(this.#canvas.width / 4);
     const height = Math.floor(this.#canvas.height / 4);
-
-    const img = new Image();
-    img.src = imageUrl;
-    img.setAttribute("width", "10");
 
     let imgWidth;
     let imgHeight;
@@ -79,13 +75,12 @@ export class Renderer {
 
     const x = width * Math.floor(position % 4);
     const y = height * Math.floor(position / 4);
-    img.onload = () =>
-      this.#ctx.drawImage(
-        img,
-        x + (width - imgWidth) / 2,
-        y,
-        imgWidth,
-        imgHeight
-      );
+    this.#ctx.drawImage(
+      imageEl,
+      x + (width - imgWidth) / 2,
+      y,
+      imgWidth,
+      imgHeight
+    );
   }
 }
