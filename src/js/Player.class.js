@@ -1,22 +1,11 @@
-
-
 export class Player {
-    #playerName;
-    #keys = new WeakMap();
+  #keys = new WeakSet();
 
-    constructor(playerName) {
-        this.playerName = playerName;
-    }
+  set key(keyObj) {
+    this.#keys.add(keyObj);
+  }
 
-    get name() {
-        return this.playerName;
-    }
-
-    set key(keyObj) {
-        this.#keys.add(keyObj);
-    }
-
-    has(key) {
-        return this.#keys.has(key);
-    }
+  has(key) {
+    return this.#keys.has(key);
+  }
 }

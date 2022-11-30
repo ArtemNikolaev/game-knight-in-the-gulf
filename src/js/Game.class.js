@@ -14,6 +14,7 @@ export class Game {
     this.#renderer = new Renderer(canvas);
 
     this.#createKeyBindings();
+    this.#createLevel();
   }
 
   #createKeyBindings() {

@@ -13,15 +13,13 @@ export class Renderer {
   #setSize() {
     this.#canvas.setAttribute("width", this.#canvas.offsetWidth);
     this.#canvas.setAttribute("height", this.#canvas.offsetHeight);
-
-    this.render();
   }
 
-  render(playerPosition, keyPosition, doorPosition) {
+  render({ playerPosition, keyPosition, doorPosition }) {
     this.#drawField();
-    this.#drawKnight(0);
-    this.#drawExit(1);
-    this.#drawKey(2);
+    this.#drawExit(doorPosition);
+    this.#drawKnight(playerPosition);
+    this.#drawKey(keyPosition);
   }
 
   #drawField() {
@@ -81,7 +79,6 @@ export class Renderer {
 
     const x = width * Math.floor(position % 4);
     const y = height * Math.floor(position / 4);
-    console.log({ position, x, y });
     img.onload = () =>
       this.#ctx.drawImage(
         img,

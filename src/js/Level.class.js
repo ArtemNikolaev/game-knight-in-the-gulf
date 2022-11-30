@@ -3,23 +3,27 @@ import { levelEvents, movements } from "./utils";
 export class Level extends EventTarget {
   #ctx;
   #player;
+  #renderer;
 
+  #key = {};
   #doorPosition = Math.floor(Math.random() * 16);
   #playerPosition = Math.floor(Math.random() * 16);
+  #keyPosition = Math.floor(Math.random() * 16);
 
-  constructor({ ctx, player, eventHandler }) {
+  constructor({ ctx, player, eventHandler, renderer }) {
     super();
 
     this.#ctx = ctx;
     this.#player = player;
+    this.#renderer = renderer;
 
     eventHandler.addEventListener(movements.up, () => this.#up());
     eventHandler.addEventListener(movements.down, () => this.#down());
     eventHandler.addEventListener(movements.left, () => this.#left());
     eventHandler.addEventListener(movements.right, () => this.#right());
-  }
 
-  #generateField() {}
+    this.#render();
+  }
 
   #up() {
     this.#playerPosition = (16 + this.#playerPosition - 4) % 16;
@@ -43,7 +47,23 @@ export class Level extends EventTarget {
     this.#render();
   }
 
-  #render() {}
+  #keyValidation() {
+    if (this.#player.has(this.#key)) {
+      this.#keyPosition = this.#playerPosition;
+    } else if (this.#playerPosition === this.#keyPosition) {
+      this.#player.key = this.#key;
+    }
+  }
+
+  #render() {
+    this.#keyValidation();
+
+    this.#renderer.render({
+      playerPosition: this.#playerPosition,
+      doorPosition: this.#doorPosition,
+      keyPosition: this.#keyPosition,
+    });
+  }
 
   onDone() {
     eventHandler.removeEventListener(movements.up, this.#up);
