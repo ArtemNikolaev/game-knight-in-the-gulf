@@ -62,12 +62,15 @@ export class Level extends EventTarget {
   #validate() {
     if (this.#player.has(this.#key)) {
       this.#keyPosition = this.#playerPosition;
-
-      if (this.#doorPosition === this.#playerPosition) {
-        this.#done = true;
-      }
     } else if (this.#playerPosition === this.#keyPosition) {
       this.#player.key = this.#key;
+    }
+
+    if (
+      this.#doorPosition === this.#playerPosition &&
+      this.#player.has(this.#key)
+    ) {
+      this.#done = true;
     }
   }
 
