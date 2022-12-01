@@ -9,9 +9,9 @@ export class Level extends EventTarget {
   #abortController = new AbortController();
   #key = {};
   #done = false;
-  #doorPosition = Math.floor(Math.random() * 16);
-  #playerPosition = Math.floor(Math.random() * 16);
-  #keyPosition = Math.floor(Math.random() * 16);
+  doorPosition = Math.floor(Math.random() * 16);
+  playerPosition = Math.floor(Math.random() * 16);
+  keyPosition = Math.floor(Math.random() * 16);
 
   constructor({ ctx, player, eventHandler, renderer }) {
     super();
@@ -20,6 +20,8 @@ export class Level extends EventTarget {
     this.#player = player;
     this.#renderer = renderer;
     this.#eventHandler = eventHandler;
+
+    this.#renderer.setColor(this);
 
     this.#eventHandler.addEventListener(movements.up, () => this.#up(), {
       signal: this.#abortController.signal,
@@ -38,36 +40,36 @@ export class Level extends EventTarget {
   }
 
   #up() {
-    this.#playerPosition = (16 + this.#playerPosition - 4) % 16;
+    this.playerPosition = (16 + this.playerPosition - 4) % 16;
     this.#render();
   }
 
   #down() {
-    this.#playerPosition = (this.#playerPosition + 4) % 16;
+    this.playerPosition = (this.playerPosition + 4) % 16;
     this.#render();
   }
 
   #left() {
-    const row = Math.floor(this.#playerPosition / 4);
-    this.#playerPosition = 4 * row + ((4 + this.#playerPosition - 1) % 4);
+    const row = Math.floor(this.playerPosition / 4);
+    this.playerPosition = 4 * row + ((4 + this.playerPosition - 1) % 4);
     this.#render();
   }
 
   #right() {
-    const row = Math.floor(this.#playerPosition / 4);
-    this.#playerPosition = 4 * row + ((this.#playerPosition + 1) % 4);
+    const row = Math.floor(this.playerPosition / 4);
+    this.playerPosition = 4 * row + ((this.playerPosition + 1) % 4);
     this.#render();
   }
 
   #validate() {
     if (this.#player.has(this.#key)) {
-      this.#keyPosition = this.#playerPosition;
-    } else if (this.#playerPosition === this.#keyPosition) {
+      this.keyPosition = this.playerPosition;
+    } else if (this.playerPosition === this.keyPosition) {
       this.#player.key = this.#key;
     }
 
     if (
-      this.#doorPosition === this.#playerPosition &&
+      this.doorPosition === this.playerPosition &&
       this.#player.has(this.#key)
     ) {
       this.#done = true;
@@ -77,11 +79,7 @@ export class Level extends EventTarget {
   #render() {
     this.#validate();
 
-    this.#renderer.render({
-      playerPosition: this.#playerPosition,
-      doorPosition: this.#doorPosition,
-      keyPosition: this.#keyPosition,
-    });
+    this.#renderer.render(this);
 
     if (this.#done) this.#onDone();
   }
