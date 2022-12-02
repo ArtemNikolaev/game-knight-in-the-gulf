@@ -1,35 +1,23 @@
-# template-vite-js-tailwind-v3
-
-- **template of:** vite + vanilaJS
-- **tailwindcss:** v3.x
-
-## Started
-
-```bash
-yarn
-# or `npm install`
-```
+# Knight in a gulf
+## [Changelog](CHANGELOG.md)
+## Desctiprion
+A petite game about the knight that is looking for way out. However, the knight doesn't know that 
+he's in a loop and is doomed to be in this loop forever..<br/>
+## Purpose
+To show good parts of `Set` `Map` and especially `WeakSet` and `WeakMap`
 
 ---
-
-## Develop
-
+## How to
+### Install Dependencies
 ```bash
-yarn dev
-# or `npm run dev`
+npm install
 ```
-
----
-
-## Build
-
+### Run Dev environment
 ```bash
-yarn build
-# or `npm run build`
+npm run dev
 ```
-
+### Run Build
+```bash
+npm run build
+```
 ---
-
-<p align="center">
-<img src="./powered-by-vitawind-bright.png">
-</p>
