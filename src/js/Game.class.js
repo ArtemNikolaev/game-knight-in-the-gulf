@@ -5,6 +5,7 @@ import { levelEvents, movements } from "./utils";
 import { Renderer } from "./Renderer.class";
 
 export class Game {
+  #count = 0;
   #renderer;
   #level;
   #player = new Player();
@@ -34,8 +35,15 @@ export class Game {
       renderer: this.#renderer,
     });
 
-    this.#level.addEventListener(levelEvents.done, () => this.#createLevel(), {
-      once: true,
-    });
+    this.#level.addEventListener(
+      levelEvents.done,
+      () => {
+        this.#count++;
+        this.#createLevel();
+      },
+      {
+        once: true,
+      }
+    );
   }
 }

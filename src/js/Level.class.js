@@ -8,7 +8,6 @@ export class Level extends EventTarget {
 
   #abortController = new AbortController();
   #key = {};
-  #done = false;
   doorPosition = Math.floor(Math.random() * 16);
   playerPosition = Math.floor(Math.random() * 16);
   keyPosition = Math.floor(Math.random() * 16);
@@ -61,27 +60,31 @@ export class Level extends EventTarget {
     this.#render();
   }
 
-  #validate() {
+  #preRenderActions() {
     if (this.#player.has(this.#key)) {
       this.keyPosition = this.playerPosition;
     } else if (this.playerPosition === this.keyPosition) {
       this.#player.key = this.#key;
     }
 
+    return true;
+  }
+
+  #afterRenderActions() {
     if (
       this.doorPosition === this.playerPosition &&
       this.#player.has(this.#key)
     ) {
-      this.#done = true;
+      return this.#onDone();
     }
   }
 
   #render() {
-    this.#validate();
+    this.#preRenderActions();
 
     this.#renderer.render(this);
 
-    if (this.#done) this.#onDone();
+    this.#afterRenderActions();
   }
 
   #onDone() {

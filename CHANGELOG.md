@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Game: level counter
+
+### Changed
+- Level: Pre-render actions and After-render action
+
+### Removed
+- Level: #done flag
+
 ## [1.0.0] - 2022-12-02
 
 ### Added
