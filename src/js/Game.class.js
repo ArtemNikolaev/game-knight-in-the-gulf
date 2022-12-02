@@ -1,7 +1,7 @@
 import { Level } from "./Level.class";
 import { Player } from "./Player.class";
 import { KeyUpHandlerClass } from "./KeyUpHandler.class";
-import { levelEvents, movements } from "./utils";
+import { movements } from "./utils";
 import { Renderer } from "./Renderer.class";
 
 export class Game {
@@ -42,21 +42,16 @@ export class Game {
     );
   }
 
+  #onLevelDone() {
+    this.#count++;
+    this.#createLevel();
+  }
+
   #createLevel() {
     this.#level = new Level({
       player: this.#player,
       renderer: this.#renderer,
+      onDoneCb: () => this.#onLevelDone(),
     });
-
-    this.#level.addEventListener(
-      levelEvents.done,
-      () => {
-        this.#count++;
-        this.#createLevel();
-      },
-      {
-        once: true,
-      }
-    );
   }
 }

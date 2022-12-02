@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Game: level counter
 - Level: getter for position
+- Game: on Level: done callback
 
 ### Changed
 - Level: Pre-render actions and After-render action
@@ -18,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 - Level: #done flag
+- Level: events
 
 ## [1.0.0] - 2022-12-02
 

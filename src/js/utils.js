@@ -4,7 +4,3 @@ export const movements = {
   left: "LEFT",
   right: "RIGHT",
 };
-
-export const levelEvents = {
-  done: "DONE",
-};

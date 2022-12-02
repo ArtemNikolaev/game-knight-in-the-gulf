@@ -1,6 +1,5 @@
-import { levelEvents } from "./utils";
-
-export class Level extends EventTarget {
+export class Level {
+  #onDoneCb;
   #ctx;
   #player;
   #renderer;
@@ -11,9 +10,8 @@ export class Level extends EventTarget {
   #playerPosition = Math.floor(Math.random() * 16);
   #keyPosition = Math.floor(Math.random() * 16);
 
-  constructor({ ctx, player, eventHandler, renderer }) {
-    super();
-
+  constructor({ ctx, player, eventHandler, renderer, onDoneCb }) {
+    this.#onDoneCb = onDoneCb;
     this.#ctx = ctx;
     this.#player = player;
     this.#renderer = renderer;
@@ -69,7 +67,7 @@ export class Level extends EventTarget {
       this.#doorPosition === this.#playerPosition &&
       this.#player.has(this.#key)
     ) {
-      return this.#onDone();
+      return this.#onDoneCb();
     }
   }
 
@@ -79,9 +77,5 @@ export class Level extends EventTarget {
     this.#renderer.render(this);
 
     this.#afterRenderActions();
-  }
-
-  #onDone() {
-    this.dispatchEvent(new Event(levelEvents.done));
   }
 }
