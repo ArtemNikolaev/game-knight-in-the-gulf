@@ -26,11 +26,12 @@ export class Renderer {
 
   render(level) {
     const colorScheme = this.#colorScheme.get(level);
+    const position = level.position;
 
     this.#drawField(colorScheme);
-    this.#drawExit(level.doorPosition);
-    this.#drawKnight(level.playerPosition);
-    this.#drawKey(level.keyPosition);
+    this.#drawExit(position.door);
+    this.#drawKnight(position.player);
+    this.#drawKey(position.key);
   }
 
   setColor(level) {

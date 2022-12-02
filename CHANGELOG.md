@@ -9,9 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Game: level counter
+- Level: getter for position
 
 ### Changed
 - Level: Pre-render actions and After-render action
+- Level: move handling keybindings to Game:
+- Level: make position vars private
 
 ### Removed
 - Level: #done flag

@@ -16,6 +16,7 @@ export class Game {
 
     this.#createKeyBindings();
     this.#createLevel();
+    this.#handleKeyBindings();
   }
 
   #createKeyBindings() {
@@ -28,9 +29,21 @@ export class Game {
     this.#eventHandler.addKeyEvents(map);
   }
 
+  #handleKeyBindings() {
+    this.#eventHandler.addEventListener(movements.up, () => this.#level.up());
+    this.#eventHandler.addEventListener(movements.down, () =>
+      this.#level.down()
+    );
+    this.#eventHandler.addEventListener(movements.left, () =>
+      this.#level.left()
+    );
+    this.#eventHandler.addEventListener(movements.right, () =>
+      this.#level.right()
+    );
+  }
+
   #createLevel() {
     this.#level = new Level({
-      eventHandler: this.#eventHandler,
       player: this.#player,
       renderer: this.#renderer,
     });
