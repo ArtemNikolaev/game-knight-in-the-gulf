@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2022-12-05
+
 ### Added
 - Game: level counter
 - Level: getter for position
@@ -30,5 +32,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - readme: info about game
 
-[unreleased]: https://github.com/ArtemNikolaev/js-sets-maps-example/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/ArtemNikolaev/js-sets-maps-example/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/ArtemNikolaev/js-sets-maps-example/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/ArtemNikolaev/js-sets-maps-example/releases/tag/v1.0.0
