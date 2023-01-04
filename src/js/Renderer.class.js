@@ -1,15 +1,10 @@
+import { colorSchemeGeneratorFunc } from "./utils";
+
 export class Renderer {
   #canvas;
   #ctx;
   #colorScheme = new WeakMap();
-  #colorSchemeList = [
-    new Set(["#4186D3", "#FFB440"]),
-    new Set(["#F56E8D", "#9CEF6C"]),
-    new Set(["#FFB273", "#5CCCCC"]),
-    new Set(["#FFCA40", "#3D4BB0"]),
-    new Set(["#FFFF73", "#AD66D5"]),
-    new Set(["#CD0074", "#9FEE00"]),
-  ];
+  #colorSchemeList = colorSchemeGeneratorFunc();
 
   constructor(canvas) {
     this.#canvas = canvas;
@@ -35,12 +30,7 @@ export class Renderer {
   }
 
   setColor(level) {
-    this.#colorScheme.set(
-      level,
-      this.#colorSchemeList[
-        Math.floor(Math.random() * this.#colorSchemeList.length)
-      ]
-    );
+    this.#colorScheme.set(level, this.#colorSchemeList.next().value);
   }
 
   #drawField(colorScheme) {
